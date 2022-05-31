@@ -23,10 +23,10 @@ timezone: Asia/Karachi
 
 title: Shairyar Baig                          # the main title
 
-tagline: A text-focused Jekyll theme   # it will display as the sub-title
+tagline: tinkering with stuff  # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  Hi there! My name is Shairyar Baig, I am a developer and I love tinkering with hardware hardware.
+  Hi there! My name is Shairyar Baig, I am a developer and I love tinkering with diferent programing languages & hardware.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://shairyar.github.io'
@@ -56,7 +56,7 @@ google_site_verification:               # fill in to your verification string
 # The end of `jekyll-seo-tag` settings
 
 google_analytics:
-  id:                 # fill in your Google Analytics ID
+  id: 'G-3MSE8F2TRT'                 # fill in your Google Analytics ID
   # Google Analytics pageviews report settings
   pv:
     proxy_endpoint:   # fill in the Google Analytics superProxy endpoint of Google App Engine
@@ -83,7 +83,7 @@ theme_mode:   # [light|dark]
 img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar:
+avatar: 'https://pbs.twimg.com/profile_images/1531277756490825728/myc7uFj__400x400.jpg'
 
 # boolean type, the global switch for ToC in posts.
 toc: true
