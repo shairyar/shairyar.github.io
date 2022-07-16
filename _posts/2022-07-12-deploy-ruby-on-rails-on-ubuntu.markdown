@@ -79,7 +79,6 @@ nvm install --lts
  
  ```bash
  sudo apt install yarn
- sudo apt install yarn
  ```
  
 ## Install Redis server
@@ -88,7 +87,6 @@ nvm install --lts
  sudo apt install redis-server
  sudo apt install redis-tools
 
- sudo systemctl status redis-server
  ```
  
  ### Make sure it is up and running
@@ -326,7 +324,13 @@ cap production puma:config
  cap production puma:systemd:config puma:systemd:enable
 
  ```
- 
+
+Finally deploy the app using the following command
+
+```bash
+ cap production deploy --trace
+
+```
 ## Troubleshooting
 
 ### Removing the repository from Ubuntu 
