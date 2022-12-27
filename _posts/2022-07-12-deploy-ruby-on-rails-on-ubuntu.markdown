@@ -248,6 +248,12 @@ config/deploy.rb
 config/deploy/production.rb
 ```
 
+and the following directory
+
+```bash
+lib/capistrano/tasks
+```
+
 Add the following in `Capfile`
 
 ```ruby
