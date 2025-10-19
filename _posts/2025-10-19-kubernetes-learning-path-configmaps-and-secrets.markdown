@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes Learning Path: ConfigMaps and Secrets"
-date: 2025-10-19 16:00:00 +0500
+date: 2025-10-19 10:00:00 +0500
 categories: [Kubernetes, Tutorial]
 tags: [kubernetes, k3d, configmap, secrets]
 series: kubernetes-learning-path
