@@ -583,10 +583,10 @@ That's it! You can now keep configuration separate from your container images, w
 
 ## What's Next?
 
-In **Part 3** of this series, we'll explore **Persistent Storage** in Kubernetes. You'll learn how to:
-- Use volumes to persist data beyond pod lifecycles
-- Work with Persistent Volumes and Persistent Volume Claims
-- Deploy stateful applications like databases
+In **Part 3** of this series, we'll explore **Understanding Namespaces** in Kubernetes. You'll learn how to:
+- Organize resources using namespaces
+- Deploy apps to different environments
+- Work with namespace-specific configurations
 
 Stay tuned!
 
@@ -596,8 +596,9 @@ Stay tuned!
 
 **Part 1:** [Deploy Your First App](/posts/kubernetes-learning-path-deploy-your-first-app/)  
 **Part 2:** ConfigMaps and Secrets ← You just finished this!  
-**Part 3:** Persistent Storage (Coming soon)  
-**Part 4:** Ingress and Load Balancing (Coming soon)
+**Part 3:** Understanding Namespaces (Coming soon)  
+**Part 4:** Persistent Storage (Coming soon)  
+**Part 5:** Ingress and Load Balancing (Coming soon)
 
 ---
 

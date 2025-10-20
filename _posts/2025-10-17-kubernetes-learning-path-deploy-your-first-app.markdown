@@ -388,9 +388,10 @@ Stay tuned!
 ## Series Navigation
 
 **Part 1:** Deploy Your First App ← You just finished this!  
-**Part 2:** ConfigMaps and Secrets (Coming soon)  
-**Part 3:** Persistent Storage (Coming soon)  
-**Part 4:** Ingress and Load Balancing (Coming soon)
+**Part 2:** [ConfigMaps and Secrets](/posts/kubernetes-learning-path-configmaps-and-secrets/)  
+**Part 3:** Understanding Namespaces (Coming soon)  
+**Part 4:** Persistent Storage (Coming soon)  
+**Part 5:** Ingress and Load Balancing (Coming soon)
 
 ---
 
