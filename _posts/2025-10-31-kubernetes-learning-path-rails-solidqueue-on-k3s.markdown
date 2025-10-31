@@ -311,7 +311,7 @@ kind: StatefulSet
 metadata:
   name: postgres
 spec:
-  serviceName: postgres  # ← Links to postgres-service above
+  serviceName: postgres  # ← Links to postgres-service below
   replicas: 1
   selector:
     matchLabels:
@@ -368,7 +368,7 @@ metadata:
 spec:
   selector:
     app: postgres  # ← Finds pods with label "app: postgres"
-                   # (matches labels in postgres-statefulset.yaml below)
+                   # (matches labels in postgres-statefulset.yaml above)
   ports:
   - port: 5432        # ← Service listens on this port
     targetPort: 5432  # ← Forwards to pod's containerPort 5432
