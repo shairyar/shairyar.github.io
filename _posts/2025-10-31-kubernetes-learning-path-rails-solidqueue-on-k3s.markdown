@@ -311,24 +311,25 @@ kind: StatefulSet
 metadata:
   name: postgres
 spec:
-  serviceName: postgres
+  serviceName: postgres  # ← Links to postgres-service above
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: postgres  # ← StatefulSet manages pods with this label
   template:
     metadata:
       labels:
-        app: postgres
+        app: postgres  # ← Each pod gets this label
+                       # postgres-service selector matches this to route traffic
     spec:
       containers:
       - name: postgres
         image: postgres:17-alpine
         ports:
-        - containerPort: 5432
+        - containerPort: 5432  # ← Service targetPort forwards here
         envFrom:
         - secretRef:
-            name: postgres-secret
+            name: postgres-secret  # ← Injects POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
@@ -336,7 +337,7 @@ spec:
       volumes:
       - name: postgres-storage
         persistentVolumeClaim:
-          claimName: postgres-pvc
+          claimName: postgres-pvc  # ← Mounts storage from postgres-pvc.yaml above
 ```
 
 Apply it:
@@ -363,14 +364,15 @@ Now let's create a stable DNS name for the database.
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  name: postgres  # ← DNS name: pods can connect via "postgres:5432"
 spec:
   selector:
-    app: postgres
+    app: postgres  # ← Finds pods with label "app: postgres"
+                   # (matches labels in postgres-statefulset.yaml below)
   ports:
-  - port: 5432
-    targetPort: 5432
-  clusterIP: None  # Headless service for StatefulSet
+  - port: 5432        # ← Service listens on this port
+    targetPort: 5432  # ← Forwards to pod's containerPort 5432
+  clusterIP: None     # ← Headless service for StatefulSet
 ```
 
 Apply it:
@@ -409,11 +411,12 @@ Rails needs configuration and secrets to run in Kubernetes. I split these into C
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: rails-config
+  name: rails-config  # ← Referenced by rails-deployment and solid-queue-deployment
 data:
   RAILS_ENV: "production"
   RAILS_LOG_TO_STDOUT: "true"
-  DATABASE_HOST: "postgres"  # ← Points to PostgreSQL service
+  DATABASE_HOST: "postgres"  # ← Kubernetes DNS resolves "postgres" to postgres-service
+                             # which routes to postgres pods
   DATABASE_PORT: "5432"
   RAILS_ASSUME_SSL: "false"  # For testing without SSL
   RAILS_FORCE_SSL: "false"
@@ -452,11 +455,11 @@ Now create the secret file:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: rails-secret
+  name: rails-secret  # ← Referenced by rails-deployment and solid-queue-deployment
 type: Opaque
 stringData:
   SECRET_KEY_BASE: "your-generated-secret-key-paste-here"
-  DATABASE_PASSWORD: "change_this_password_123"  # Must match postgres-secret!
+  DATABASE_PASSWORD: "change_this_password_123"  # ← Must match postgres-secret.yaml
   DATABASE_USERNAME: "rails_user"
   DATABASE_NAME: "myapp_production"
 ```
@@ -495,11 +498,12 @@ spec:
   replicas: 3  # Three web server pods
   selector:
     matchLabels:
-      app: rails
+      app: rails  # ← Deployment manages pods with this label
   template:
     metadata:
       labels:
-        app: rails
+        app: rails  # ← Each pod gets this label
+                    # rails-service.yaml selector "app: rails" finds these pods
     spec:
       initContainers:
       - name: db-setup
@@ -515,19 +519,19 @@ spec:
             bundle exec rails db:migrate
         envFrom:
         - configMapRef:
-            name: rails-config
+            name: rails-config  # ← Injects DATABASE_HOST="postgres" etc.
         - secretRef:
-            name: rails-secret
+            name: rails-secret  # ← Injects DATABASE_PASSWORD, SECRET_KEY_BASE
       containers:
       - name: web
         image: your-username/my-rails-app:v1
         ports:
-        - containerPort: 3000
+        - containerPort: 3000  # ← rails-service targetPort forwards here
         envFrom:
         - configMapRef:
-            name: rails-config
+            name: rails-config  # ← Rails reads DATABASE_HOST to connect to postgres
         - secretRef:
-            name: rails-secret
+            name: rails-secret  # ← Rails reads DATABASE_PASSWORD to authenticate
         livenessProbe:
           httpGet:
             path: /up
@@ -609,14 +613,15 @@ Time to create a load balancer for the web pods.
 apiVersion: v1
 kind: Service
 metadata:
-  name: rails-service
+  name: rails-service  # ← DNS name for accessing Rails internally
 spec:
-  type: ClusterIP
+  type: ClusterIP  # ← Internal only (use Ingress for external access)
   selector:
-    app: rails
+    app: rails  # ← Finds pods with label "app: rails"
+                # (matches labels in rails-deployment.yaml)
   ports:
-  - port: 80
-    targetPort: 3000
+  - port: 80          # ← Service listens on port 80
+    targetPort: 3000  # ← Forwards to pod's containerPort 3000 (Puma)
 ```
 
 Apply it:
@@ -658,25 +663,25 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: solid-queue-worker
+      app: solid-queue-worker  # ← Deployment manages pods with this label
   template:
     metadata:
       labels:
-        app: solid-queue-worker
+        app: solid-queue-worker  # ← Each worker pod gets this label
     spec:
       containers:
       - name: worker
-        image: your-username/my-rails-app:v1
-        command:
+        image: your-username/my-rails-app:v1  # ← Same image as rails-deployment
+        command:  # ← Different command: runs SolidQueue instead of web server
           - bundle
           - exec
           - rake
           - solid_queue:start
         envFrom:
         - configMapRef:
-            name: rails-config
+            name: rails-config  # ← Workers use same DATABASE_HOST="postgres" to connect
         - secretRef:
-            name: rails-secret
+            name: rails-secret  # ← Workers use same DATABASE_PASSWORD to authenticate
         resources:
           requests:
             memory: "256Mi"
