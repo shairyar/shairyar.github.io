@@ -9,7 +9,7 @@ series_order: 6
 
 # Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s
 
-After setting up my 3-node Raspberry Pi k3s cluster in the previous post, I wanted to deploy something real—not just nginx demos, but an actual production-grade application. So I decided to deploy a Ruby on Rails 8 application with all the modern bells and whistles: PostgreSQL, background jobs with SolidQueue, database-backed caching with SolidCache, and proper health checks.
+After setting up my 3-node Raspberry Pi k3s cluster in the [previous post](/posts/kubernetes-learning-path-k3s-on-raspberry-pi/), I wanted to deploy something real—not just nginx demos, but an actual production-grade application. So I decided to deploy a Ruby on Rails 8 application with all the modern bells and whistles: PostgreSQL, background jobs with SolidQueue, database-backed caching with SolidCache, and proper health checks.
 
 This wasn't a weekend afternoon project. It took me a few days of trial and error, reading documentation, debugging architecture mismatches, and learning a lot about how Rails 8's new features work in a Kubernetes environment. But once everything clicked into place and I saw my Rails app running across multiple pods, processing background jobs on separate workers, all on my little Pi cluster—it felt incredible.
 
@@ -911,9 +911,10 @@ And honestly? Seeing background jobs process on dedicated worker pods while the 
 
 ## What's Next?
 
-I have a working Rails cluster, but there's more to do. In future posts, I'll be exploring:
+I have a working Rails cluster, but there's more to do. In the [next post](/posts/kubernetes-learning-path-ingress-controller/), I'll be setting up an **Ingress Controller** for proper external HTTP access—no more port-forward!
 
-- **Traefik Ingress** for proper external HTTP access (no more port-forward!)
+After that, I'll be exploring:
+
 - **Persistent storage for uploads** using NFS or Longhorn
 - **Mission Control Jobs** for monitoring background jobs via web UI
 - **SSL/TLS with cert-manager** and Let's Encrypt
@@ -935,7 +936,8 @@ Stay tuned!
 **Part 4:** [Understanding Port Mapping in k3d](/posts/kubernetes-learning-path-port-mapping/)  
 **Part 5:** [Setting Up k3s on Raspberry Pi](/posts/kubernetes-learning-path-k3s-on-raspberry-pi/)  
 **Part 6:** Deploying Rails 8 with SolidQueue on k3s ← You just finished this!  
-**Part 7:** Persistent Storage (Coming soon)
+**Part 7:** [Setting Up Ingress Controller](/posts/kubernetes-learning-path-ingress-controller/)  
+**Part 8:** Persistent Storage (Coming soon)
 
 ---
 
