@@ -1,0 +1,785 @@
+<!doctype html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s" /><meta property="og:locale" content="en" /><meta name="description" content="Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s" /><meta property="og:description" content="Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s" /><link rel="canonical" href="https://shairyar.github.io/posts/kubernetes-learning-path-rails-solidqueue-on-k3s/" /><meta property="og:url" content="https://shairyar.github.io/posts/kubernetes-learning-path-rails-solidqueue-on-k3s/" /><meta property="og:site_name" content="Shairyar Baig" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2025-10-31T14:00:00+05:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s" /><meta name="twitter:site" content="@iamshairyar" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-11-06T17:03:43+05:00","datePublished":"2025-10-31T14:00:00+05:00","description":"Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s","headline":"Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s","mainEntityOfPage":{"@type":"WebPage","@id":"https://shairyar.github.io/posts/kubernetes-learning-path-rails-solidqueue-on-k3s/"},"url":"https://shairyar.github.io/posts/kubernetes-learning-path-rails-solidqueue-on-k3s/"}</script><title>Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s | Shairyar Baig</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Shairyar Baig"><meta name="application-name" content="Shairyar Baig"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.32.2/dist/tocbot.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css"> <script src="/assets/js/dist/theme.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/glightbox@3.3.0/dist/js/glightbox.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.13/dayjs.min.js,npm/dayjs@1.11.13/locale/en.js,npm/dayjs@1.11.13/plugin/relativeTime.js,npm/dayjs@1.11.13/plugin/localizedFormat.js,npm/tocbot@4.32.2/dist/tocbot.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id=G-3MSE8F2TRT"></script> <script> document.addEventListener('DOMContentLoaded', () => { window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-3MSE8F2TRT'); }); </script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/" id="avatar" class="rounded-circle"><img src="https://pbs.twimg.com/profile_images/1531277756490825728/myc7uFj__400x400.jpg" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a> <a class="site-title d-block" href="/">Shairyar Baig</a><p class="site-subtitle fst-italic mb-0">tinkering with stuff</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>ABOUT</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/shairyar" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/iamshairyar" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fab fa-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['shairyarbaig','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/">Home</a> </span> <span>Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Post</div><button type="button" id="search-trigger" class="btn btn-link" aria-label="Search"> <i class="fas fa-search fa-fw"></i> </button> <search id="search" class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..." > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">Cancel</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><article class="px-1" data-toc="true"><header><h1 data-toc-skip>Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s</h1><div class="post-meta text-muted"> <span> Posted <time data-ts="1761901200" data-df="ll" data-bs-toggle="tooltip" data-bs-placement="bottom" > Oct 31, 2025 </time> </span> <span> Updated <time data-ts="1762430623" data-df="ll" data-bs-toggle="tooltip" data-bs-placement="bottom" > Nov 6, 2025 </time> </span><div class="d-flex justify-content-between"> <span> By <em> <a href="https://twitter.com/iamshairyar">Shairyar Baig</a> </em> </span><div> <span class="readtime" data-bs-toggle="tooltip" data-bs-placement="bottom" title="4625 words" > <em>25 min</em> read</span></div></div></div></header><div id="toc-bar" class="d-flex align-items-center justify-content-between invisible"> <span class="label text-truncate">Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s</span> <button type="button" class="toc-trigger btn me-1"> <i class="fa-solid fa-list-ul fa-fw"></i> </button></div><button id="toc-solo-trigger" type="button" class="toc-trigger btn btn-outline-secondary btn-sm"> <span class="label ps-2 pe-1">Contents</span> <i class="fa-solid fa-angle-right fa-fw"></i> </button> <dialog id="toc-popup" class="p-0"><div class="header d-flex flex-row align-items-center justify-content-between"><div class="label text-truncate py-2 ms-4">Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s</div><button id="toc-popup-close" type="button" class="btn mx-1 my-1 opacity-75"> <i class="fas fa-close"></i> </button></div><div id="toc-popup-content" class="px-4 py-3 pb-4"></div></dialog><div class="content"><h1 id="kubernetes-learning-path-deploying-rails-8-with-solidqueue-on-raspberry-pi-k3s">Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s</h1><p>After setting up my 3-node Raspberry Pi k3s cluster in the <a href="/posts/kubernetes-learning-path-k3s-on-raspberry-pi/">previous post</a>, I wanted to deploy something real—not just nginx demos, but an actual production-grade application. So I decided to deploy a Ruby on Rails 8 application with all the modern bells and whistles: PostgreSQL, background jobs with SolidQueue, database-backed caching with SolidCache, and proper health checks.</p><p>This wasn’t a weekend afternoon project. It took me a few days of trial and error, reading documentation, debugging architecture mismatches, and learning a lot about how Rails 8’s new features work in a Kubernetes environment. But once everything clicked into place and I saw my Rails app running across multiple pods, processing background jobs on separate workers, all on my little Pi cluster—it felt incredible.</p><p>Let me walk you through what I built, what went wrong, and what I learned.</p><h2 id="why-rails-8"><span class="me-2">Why Rails 8?</span><a href="#why-rails-8" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>I’ll be honest—I chose Rails because I’m already familiar with it. The goal here was to deploy a complete, production-grade application stack on Kubernetes, not to learn a new framework at the same time. Trying to learn Kubernetes <em>and</em> a new language/framework simultaneously would have been overwhelming.</p><p>Rails was the obvious choice because I know how it works, I understand its conventions, and I can focus on the Kubernetes side of things without getting lost in framework documentation.</p><p><strong>The Pleasant Surprise: Rails 8’s Built-in Features</strong></p><p>What I didn’t expect was how well Rails 8 fits into Kubernetes. It comes with SolidQueue and SolidCache built-in—database-backed solutions for background jobs and caching. Before Rails 8, you’d typically need Redis for Sidekiq (background jobs) and Redis or Memcached for caching.</p><p>With Rails 8, everything uses PostgreSQL:</p><ul><li>Application data → PostgreSQL<li>Background job queue → PostgreSQL (via SolidQueue)<li>Cache storage → PostgreSQL (via SolidCache)</ul><h2 id="the-architecture-were-building"><span class="me-2">The Architecture We’re Building</span><a href="#the-architecture-were-building" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Here’s what I deployed in this phase:</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre><td class="rouge-code"><pre>┌─────────────────────────────────────────────┐
+│         k3s Cluster (3 Raspberry Pis)       │
+│                                             │
+│  ┌────────────┐  ┌────────────┐            │
+│  │ Rails Web  │  │ Rails Web  │ (Pods)     │
+│  │  Pod x3    │  │  Pod x3    │            │
+│  └─────┬──────┘  └─────┬──────┘            │
+│        │                │                    │
+│        └────────┬───────┘                    │
+│                 │                            │
+│        ┌────────▼────────┐                  │
+│        │  Rails Service  │                  │
+│        │   (ClusterIP)   │                  │
+│        │ Internal Only   │                  │
+│        └────────┬────────┘                  │
+│                 │                            │
+│  ┌──────────────▼──────────────┐            │
+│  │   SolidQueue Workers (x2)   │            │
+│  │ (Background Job Processors) │            │
+│  └──────────────┬──────────────┘            │
+│                 │                            │
+│        ┌────────▼────────┐                  │
+│        │  PostgreSQL 17  │                  │
+│        │  (StatefulSet)  │                  │
+│        │ + Persistent    │                  │
+│        │     Storage     │                  │
+│        └─────────────────┘                  │
+│                                             │
+└─────────────────────────────────────────────┘
+
+Access via: kubectl port-forward (for now)
+</pre></table></code></div></div><p><strong>What I deployed:</strong></p><ul><li><strong>3 Rails web server pods</strong> (Deployment)<li><strong>2 SolidQueue worker pods</strong> (Deployment)<li><strong>1 PostgreSQL pod</strong> (StatefulSet with 5GB persistent storage)<li><strong>2 Services:</strong> rails-service (ClusterIP) and postgres (Headless)</ul><p><strong>What’s next (future posts):</strong></p><ul><li>Traefik Ingress for external access<li>Persistent volumes for file uploads<li>Monitoring with Mission Control Jobs<li>SSL/TLS with cert-manager</ul><h2 id="what-youll-need"><span class="me-2">What You’ll Need</span><a href="#what-youll-need" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Before starting, make sure you have:</p><ul><li>A working k3s cluster on Raspberry Pi (from <a href="/posts/kubernetes-learning-path-k3s-on-raspberry-pi/">Part 5</a>)<li>Docker installed on your laptop for building images<li>A Docker Hub account (free tier works fine)<li><code class="language-plaintext highlighter-rouge">kubectl</code> configured to access your cluster<li>Basic understanding of Rails (helpful but not required)</ul><h2 id="the-big-challenge-cross-architecture-builds"><span class="me-2">The Big Challenge: Cross-Architecture Builds</span><a href="#the-big-challenge-cross-architecture-builds" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>This was my first major roadblock. I develop on an x86_64 laptop (Intel/AMD architecture), but Raspberry Pi uses ARM64 architecture. If you build a Docker image on your laptop without specifying the platform, it won’t run on the Pi.</p><p>The symptom? Pods that immediately fail with cryptic errors like <code class="language-plaintext highlighter-rouge">exec format error</code> or <code class="language-plaintext highlighter-rouge">exec /bin/sh: exec format error</code>.</p><h3 id="docker-hub-setup-one-time"><span class="me-2">Docker Hub Setup (One-Time)</span><a href="#docker-hub-setup-one-time" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Before building and pushing images, you need a Docker Hub account and to log in:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre><span class="c"># Create a free account at https://hub.docker.com if you don't have one</span>
+<span class="c"># Free tier includes unlimited public repos</span>
+
+<span class="c"># Login to Docker Hub (do this once on each machine you build from)</span>
+docker login
+<span class="c"># Enter your Docker Hub username and password</span>
+</pre></table></code></div></div><p>Once logged in, you can push images to your Docker Hub account.</p><p><strong>Solution 1: Build on the Raspberry Pi directly</strong></p><p>I found out this to be the most reliable method:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre><span class="c"># SSH to your master node</span>
+ssh pi@192.168.18.49
+
+<span class="c"># If you haven't logged in on the Pi yet:</span>
+docker login
+
+<span class="c"># Build the image directly on ARM64 hardware</span>
+docker build <span class="nt">-t</span> your-dockerhub-username/my-rails-app:v1 <span class="nb">.</span>
+docker push your-dockerhub-username/my-rails-app:v1
+</pre></table></code></div></div><p>Replace <code class="language-plaintext highlighter-rouge">your-dockerhub-username</code> with your actual Docker Hub username.</p><p>Building on the Pi takes about 15-20 minutes because, well, it’s a Raspberry Pi. But you’ll get a native ARM64 image that works perfectly.</p><p><strong>Solution 2: Cross-compile on your laptop with QEMU</strong></p><p>You can also cross-compile on your laptop if you don’t want to SSH to the Pi. This requires QEMU emulation:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="c"># On Arch Linux (my setup)</span>
+<span class="nb">sudo </span>pacman <span class="nt">-S</span> qemu-user-static qemu-user-static-binfmt
+<span class="nb">sudo </span>systemctl start systemd-binfmt.service
+
+<span class="c"># Verify QEMU is working</span>
+<span class="nb">ls</span> /proc/sys/fs/binfmt_misc/ | <span class="nb">grep </span>qemu
+<span class="c"># Should show: qemu-aarch64, qemu-arm, etc.</span>
+
+<span class="c"># Now build for ARM64 from your laptop</span>
+docker buildx build <span class="nt">--platform</span> linux/arm64 <span class="se">\</span>
+  <span class="nt">-t</span> your-dockerhub-username/my-rails-app:v1 <span class="se">\</span>
+  <span class="nt">--push</span> <span class="nb">.</span>
+</pre></table></code></div></div><p><strong>Note:</strong> In my testing, building directly on the Pi was actually <em>faster</em> than cross-compiling with QEMU emulation. QEMU adds overhead, and the Pi’s native ARM64 build was more efficient. The cross-compile option is mainly useful if you can’t SSH to the Pi or want to automate builds from your laptop.</p><p><strong>Lesson learned:</strong> Always specify <code class="language-plaintext highlighter-rouge">--platform linux/arm64</code> when building for Raspberry Pi. I wasted several hours debugging “exec format error” before realizing my x86_64 images wouldn’t run on ARM64.</p><h2 id="step-1-prepare-the-rails-application"><span class="me-2">Step 1: Prepare the Rails Application</span><a href="#step-1-prepare-the-rails-application" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>I created a Rails 8.1.1 application with all the modern defaults. If you want to follow along, here’s the quick setup:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="c"># Create new Rails 8 app</span>
+rails new my-rails-app <span class="nt">--database</span><span class="o">=</span>postgresql
+
+<span class="c"># Rails 8 automatically includes:</span>
+<span class="c"># ✅ Solid Queue (background jobs)</span>
+<span class="c"># ✅ Solid Cache (caching)</span>
+<span class="c"># ✅ Dockerfile (production-ready, multi-stage)</span>
+<span class="c"># ✅ Health check endpoint (/up)</span>
+</pre></table></code></div></div><p>The generated Dockerfile is already optimized for production. Rails 8 does a great job here.</p><h3 id="important-configuration-changes"><span class="me-2">Important Configuration Changes</span><a href="#important-configuration-changes" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Rails 8 production mode assumes SSL by default, which caused CSRF errors when I tried to access the app via <code class="language-plaintext highlighter-rouge">kubectl port-forward</code> (which uses HTTP, not HTTPS).</p><p><strong>Make SSL configurable in <code class="language-plaintext highlighter-rouge">config/environments/production.rb</code>:</strong></p><div class="language-ruby highlighter-rouge"><div class="code-header"> <span data-label-text="Ruby"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre><span class="c1"># Allow disabling SSL for testing (keep enabled in real production)</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">assume_ssl</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"RAILS_ASSUME_SSL"</span><span class="p">,</span> <span class="s2">"true"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"true"</span>
+<span class="n">config</span><span class="p">.</span><span class="nf">force_ssl</span> <span class="o">=</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s2">"RAILS_FORCE_SSL"</span><span class="p">,</span> <span class="s2">"true"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"true"</span>
+</pre></table></code></div></div><p><strong>Fix database connection in <code class="language-plaintext highlighter-rouge">config/database.yml</code>:</strong></p><p>Rails defaults to Unix socket connections for PostgreSQL, but in Kubernetes we need TCP connections:</p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre><span class="na">production</span><span class="pi">:</span>
+  <span class="na">&lt;&lt;</span><span class="pi">:</span> <span class="nv">*default</span>
+  <span class="na">database</span><span class="pi">:</span> <span class="s">myapp_production</span>
+  <span class="na">username</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("DATABASE_USERNAME") { "rails_user" } %&gt;</span>
+  <span class="na">password</span><span class="pi">:</span> <span class="s">&lt;%= ENV["DATABASE_PASSWORD"] %&gt;</span>
+  <span class="na">host</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("DATABASE_HOST") { "localhost" } %&gt;</span>
+  <span class="na">port</span><span class="pi">:</span> <span class="s">&lt;%= ENV.fetch("DATABASE_PORT") { "5432" } %&gt;</span>
+</pre></table></code></div></div><p>The key here is <code class="language-plaintext highlighter-rouge">host:</code> reading from <code class="language-plaintext highlighter-rouge">DATABASE_HOST</code> environment variable, which will point to our PostgreSQL service.</p><h2 id="step-2-build-and-push-the-docker-image"><span class="me-2">Step 2: Build and Push the Docker Image</span><a href="#step-2-build-and-push-the-docker-image" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>I built the image on my Raspberry Pi master node for guaranteed compatibility:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="c"># SSH to the Pi</span>
+ssh pi@192.168.18.49
+
+<span class="c"># Clone your app or copy it over</span>
+<span class="c"># Then build:</span>
+<span class="nb">cd </span>my-rails-app
+docker build <span class="nt">-t</span> your-username/my-rails-app:v1 <span class="nb">.</span>
+docker push your-username/my-rails-app:v1
+</pre></table></code></div></div><p>Building took about 18 minutes on my Pi 4. Grab some coffee.</p><p><strong>Important:</strong> This single image is reused for:</p><ul><li>Rails web server pods (default CMD)<li>SolidQueue worker pods (override CMD)<li>Database migration init container (runs before web pods start)</ul><p>One image, multiple purposes. That’s the beauty of the Rails 8 Dockerfile.</p><h2 id="step-3-deploy-postgresql-to-kubernetes"><span class="me-2">Step 3: Deploy PostgreSQL to Kubernetes</span><a href="#step-3-deploy-postgresql-to-kubernetes" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Before Rails can start, we need the database running. I created four YAML files for PostgreSQL deployment.</p><h3 id="postgresql-secret"><span class="me-2">PostgreSQL Secret</span><a href="#postgresql-secret" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>First, we need to store database credentials securely.</p><p><strong>Why we need this:</strong> PostgreSQL needs a username, password, and database name to initialize. Kubernetes Secrets store this sensitive data (base64-encoded, can be encrypted at rest).</p><p><strong>Where it’s used:</strong> The PostgreSQL StatefulSet reads these values as environment variables to create the database and user.</p><p><strong><code class="language-plaintext highlighter-rouge">postgres-secret.yaml</code>:</strong></p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-secret</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
+<span class="na">stringData</span><span class="pi">:</span>
+  <span class="na">POSTGRES_USER</span><span class="pi">:</span> <span class="s">rails_user</span>
+  <span class="na">POSTGRES_PASSWORD</span><span class="pi">:</span> <span class="s">change_this_password_123</span>
+  <span class="na">POSTGRES_DB</span><span class="pi">:</span> <span class="s">myapp_production</span>
+</pre></table></code></div></div><p><strong>⚠️ Important:</strong> Change that password! Never use default passwords in production.</p><p>Apply it:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>kubectl apply <span class="nt">-f</span> postgres-secret.yaml
+</pre></table></code></div></div><h3 id="persistent-storage"><span class="me-2">Persistent Storage</span><a href="#persistent-storage" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Databases need storage that survives pod restarts.</p><p><strong>Why we need this:</strong> Without persistent storage, all database data would be lost when the PostgreSQL pod restarts or crashes. PersistentVolumeClaims (PVCs) request storage from Kubernetes that persists independently of pods.</p><p><strong>Where it’s used:</strong> The PostgreSQL StatefulSet mounts this volume to <code class="language-plaintext highlighter-rouge">/var/lib/postgresql/data</code> where PostgreSQL stores its data files.</p><p><strong><code class="language-plaintext highlighter-rouge">postgres-pvc.yaml</code>:</strong></p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-pvc</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ReadWriteOnce</span>  <span class="c1"># Single node can mount for read/write</span>
+  <span class="na">resources</span><span class="pi">:</span>
+    <span class="na">requests</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">5Gi</span>  <span class="c1"># Request 5GB of storage</span>
+</pre></table></code></div></div><p>Apply it:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>kubectl apply <span class="nt">-f</span> postgres-pvc.yaml
+
+<span class="c"># Wait for it to bind</span>
+kubectl get pvc <span class="nt">-w</span>
+<span class="c"># Press Ctrl+C when STATUS shows "Bound"</span>
+</pre></table></code></div></div><p>k3s automatically provisions local storage on one of your Pi nodes.</p><h3 id="postgresql-statefulset"><span class="me-2">PostgreSQL StatefulSet</span><a href="#postgresql-statefulset" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Now for the actual database pod.</p><p><strong>Why we need this:</strong> We use a StatefulSet (not a Deployment) because databases need:</p><ul><li>Stable pod names (always <code class="language-plaintext highlighter-rouge">postgres-0</code>, not random names)<li>Ordered startup and shutdown<li>Stable persistent storage that follows the pod</ul><p><strong>Where it’s used:</strong> This creates the PostgreSQL pod that Rails and SolidQueue will connect to for all database operations.</p><p><strong><code class="language-plaintext highlighter-rouge">postgres-statefulset.yaml</code>:</strong></p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre><td class="rouge-code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">postgres</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">postgres</span>  <span class="c1"># ← Links to postgres-service below</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">postgres</span>  <span class="c1"># ← StatefulSet manages pods with this label</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">postgres</span>  <span class="c1"># ← Each pod gets this label</span>
+                       <span class="c1"># postgres-service selector matches this to route traffic</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:17-alpine</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">5432</span>  <span class="c1"># ← Service targetPort forwards here</span>
+        <span class="na">envFrom</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-secret</span>  <span class="c1"># ← Injects POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB</span>
+        <span class="na">volumeMounts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-storage</span>
+          <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/postgresql/data</span>
+          <span class="na">subPath</span><span class="pi">:</span> <span class="s">postgres</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-storage</span>
+        <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+          <span class="na">claimName</span><span class="pi">:</span> <span class="s">postgres-pvc</span>  <span class="c1"># ← Mounts storage from postgres-pvc.yaml above</span>
+</pre></table></code></div></div><p>Apply it:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>kubectl apply <span class="nt">-f</span> postgres-statefulset.yaml
+
+<span class="c"># Watch PostgreSQL start</span>
+kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>postgres <span class="nt">-w</span>
+<span class="c"># Wait for STATUS: Running, READY: 1/1</span>
+</pre></table></code></div></div><h3 id="postgresql-service"><span class="me-2">PostgreSQL Service</span><a href="#postgresql-service" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Now let’s create a stable DNS name for the database.</p><p><strong>Why we need this:</strong> Pod IP addresses change when they restart. A Service gives us a stable DNS name (<code class="language-plaintext highlighter-rouge">postgres</code>) that Rails can use to connect. Even if the PostgreSQL pod restarts and gets a new IP, the service name stays the same.</p><p><strong>Where it’s used:</strong> Rails’ <code class="language-plaintext highlighter-rouge">database.yml</code> will use <code class="language-plaintext highlighter-rouge">host: postgres</code> to connect. Kubernetes DNS automatically resolves this to the PostgreSQL pod’s IP.</p><p><strong><code class="language-plaintext highlighter-rouge">postgres-service.yaml</code>:</strong></p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">postgres</span>  <span class="c1"># ← DNS name: pods can connect via "postgres:5432"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">postgres</span>  <span class="c1"># ← Finds pods with label "app: postgres"</span>
+                   <span class="c1"># (matches labels in postgres-statefulset.yaml above)</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">5432</span>        <span class="c1"># ← Service listens on this port</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="m">5432</span>  <span class="c1"># ← Forwards to pod's containerPort 5432</span>
+  <span class="na">clusterIP</span><span class="pi">:</span> <span class="s">None</span>     <span class="c1"># ← Headless service for StatefulSet</span>
+</pre></table></code></div></div><p>Apply it:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>kubectl apply <span class="nt">-f</span> postgres-service.yaml
+</pre></table></code></div></div><p>Now any pod can connect to PostgreSQL using the hostname <code class="language-plaintext highlighter-rouge">postgres</code> on port <code class="language-plaintext highlighter-rouge">5432</code>. This is what we configured in <code class="language-plaintext highlighter-rouge">database.yml</code>.</p><h3 id="verify-postgresql-is-running"><span class="me-2">Verify PostgreSQL is Running</span><a href="#verify-postgresql-is-running" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="c"># Check pod status</span>
+kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>postgres
+
+<span class="c"># Test connection</span>
+kubectl <span class="nb">exec</span> <span class="nt">-it</span> postgres-0 <span class="nt">--</span> psql <span class="nt">-U</span> rails_user <span class="nt">-d</span> myapp_production <span class="nt">-c</span> <span class="s2">"SELECT version();"</span>
+</pre></table></code></div></div><p>You should see PostgreSQL version info. Database is ready!</p><h2 id="step-4-configure-rails-for-kubernetes"><span class="me-2">Step 4: Configure Rails for Kubernetes</span><a href="#step-4-configure-rails-for-kubernetes" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Rails needs configuration and secrets to run in Kubernetes. I split these into ConfigMaps (non-sensitive config) and Secrets (sensitive stuff like passwords).</p><h3 id="rails-configmap"><span class="me-2">Rails ConfigMap</span><a href="#rails-configmap" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Why we need this:</strong> Rails needs various environment variables to run (database host, Rails environment, logging settings, etc.). ConfigMaps store non-sensitive configuration that can be shared across all Rails and worker pods.</p><p><strong>Where it’s used:</strong> Both the Rails web deployment and SolidQueue worker deployment will inject these environment variables into their pods.</p><p><strong><code class="language-plaintext highlighter-rouge">rails-configmap.yaml</code>:</strong></p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">rails-config</span>  <span class="c1"># ← Referenced by rails-deployment and solid-queue-deployment</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">RAILS_ENV</span><span class="pi">:</span> <span class="s2">"</span><span class="s">production"</span>
+  <span class="na">RAILS_LOG_TO_STDOUT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+  <span class="na">DATABASE_HOST</span><span class="pi">:</span> <span class="s2">"</span><span class="s">postgres"</span>  <span class="c1"># ← Kubernetes DNS resolves "postgres" to postgres-service</span>
+                             <span class="c1"># which routes to postgres pods</span>
+  <span class="na">DATABASE_PORT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">5432"</span>
+  <span class="na">RAILS_ASSUME_SSL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">false"</span>  <span class="c1"># For testing without SSL</span>
+  <span class="na">RAILS_FORCE_SSL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">false"</span>
+  <span class="na">SOLID_QUEUE_DISPATCHERS_POLLING_INTERVAL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+  <span class="na">SOLID_QUEUE_WORKERS_POLLING_INTERVAL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0.1"</span>
+</pre></table></code></div></div><h3 id="rails-secret"><span class="me-2">Rails Secret</span><a href="#rails-secret" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Why we need this:</strong> Rails requires sensitive data like the secret key (for encrypting sessions/cookies) and database credentials. Unlike ConfigMaps, Secrets are base64-encoded and can be encrypted at rest for better security.</p><p><strong>Where it’s used:</strong> The Rails web pods and SolidQueue workers need these secrets to connect to the database and encrypt user sessions.</p><p>First, generate a secret key. You can do this from <strong>your laptop</strong> or from the Pi—doesn’t matter:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="c"># Option 1: Using Rails (run this on your laptop)</span>
+docker run <span class="nt">--platform</span> linux/arm64 <span class="nt">--rm</span> your-username/my-rails-app:v1 ./bin/rails secret
+
+<span class="c"># Option 2: Using OpenSSL (simpler - run this on your laptop)</span>
+openssl rand <span class="nt">-hex</span> 64
+</pre></table></code></div></div><p>You’ll get a long random string like:</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9
+</pre></table></code></div></div><p>Copy this output—you’ll paste it into the YAML file in the next step.</p><p>Now create the secret file:</p><p><strong><code class="language-plaintext highlighter-rouge">rails-secret.yaml</code>:</strong></p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">rails-secret</span>  <span class="c1"># ← Referenced by rails-deployment and solid-queue-deployment</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
+<span class="na">stringData</span><span class="pi">:</span>
+  <span class="na">SECRET_KEY_BASE</span><span class="pi">:</span> <span class="s2">"</span><span class="s">your-generated-secret-key-paste-here"</span>
+  <span class="na">DATABASE_PASSWORD</span><span class="pi">:</span> <span class="s2">"</span><span class="s">change_this_password_123"</span>  <span class="c1"># ← Must match postgres-secret.yaml</span>
+  <span class="na">DATABASE_USERNAME</span><span class="pi">:</span> <span class="s2">"</span><span class="s">rails_user"</span>
+  <span class="na">DATABASE_NAME</span><span class="pi">:</span> <span class="s2">"</span><span class="s">myapp_production"</span>
+</pre></table></code></div></div><p><strong>⚠️ Critical:</strong> <code class="language-plaintext highlighter-rouge">DATABASE_PASSWORD</code> must exactly match what you set in <code class="language-plaintext highlighter-rouge">postgres-secret.yaml</code>!</p><p>Apply both:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>kubectl apply <span class="nt">-f</span> rails-configmap.yaml
+kubectl apply <span class="nt">-f</span> rails-secret.yaml
+</pre></table></code></div></div><h2 id="step-5-deploy-rails-web-application"><span class="me-2">Step 5: Deploy Rails Web Application</span><a href="#step-5-deploy-rails-web-application" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Now for the main event—deploying Rails itself.</p><h3 id="rails-deployment-with-init-container"><span class="me-2">Rails Deployment with Init Container</span><a href="#rails-deployment-with-init-container" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>This is where it gets interesting. The init container runs database migrations before the main Rails container starts.</p><p><strong>Why we need this:</strong> This is the core web application. The Deployment creates 3 Rails pods running Puma (the web server) to handle HTTP requests. We use a Deployment (not StatefulSet) because web servers are stateless—any pod can handle any request.</p><p><strong>The init container trick:</strong> Before the web server starts, an init container runs database migrations. This ensures the database schema is up-to-date before Rails starts serving requests.</p><p><strong>Where it’s used:</strong> These pods handle all HTTP requests to your Rails application. The Service (next step) will load-balance traffic across all 3 pods.</p><p><strong><code class="language-plaintext highlighter-rouge">rails-deployment.yaml</code>:</strong></p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+</pre><td class="rouge-code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">rails-app</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>  <span class="c1"># Three web server pods</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">rails</span>  <span class="c1"># ← Deployment manages pods with this label</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">rails</span>  <span class="c1"># ← Each pod gets this label</span>
+                    <span class="c1"># rails-service.yaml selector "app: rails" finds these pods</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">initContainers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">db-setup</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">your-username/my-rails-app:v1</span>
+        <span class="na">command</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s">sh</span>
+          <span class="pi">-</span> <span class="s">-c</span>
+          <span class="pi">-</span> <span class="pi">|</span>
+            <span class="s">bundle exec rails db:create || echo "Databases may exist"</span>
+            <span class="s">bundle exec rails db:prepare</span>
+            <span class="s">bundle exec rails solid_queue:install:migrations</span>
+            <span class="s">bundle exec rails solid_cache:install:migrations</span>
+            <span class="s">bundle exec rails db:migrate</span>
+        <span class="na">envFrom</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">configMapRef</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">rails-config</span>  <span class="c1"># ← Injects DATABASE_HOST="postgres" etc.</span>
+        <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">rails-secret</span>  <span class="c1"># ← Injects DATABASE_PASSWORD, SECRET_KEY_BASE</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">your-username/my-rails-app:v1</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">3000</span>  <span class="c1"># ← rails-service targetPort forwards here</span>
+        <span class="na">envFrom</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">configMapRef</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">rails-config</span>  <span class="c1"># ← Rails reads DATABASE_HOST to connect to postgres</span>
+        <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">rails-secret</span>  <span class="c1"># ← Rails reads DATABASE_PASSWORD to authenticate</span>
+        <span class="na">livenessProbe</span><span class="pi">:</span>
+          <span class="na">httpGet</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/up</span>
+            <span class="na">port</span><span class="pi">:</span> <span class="m">3000</span>
+          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="m">30</span>
+          <span class="na">periodSeconds</span><span class="pi">:</span> <span class="m">10</span>
+        <span class="na">readinessProbe</span><span class="pi">:</span>
+          <span class="na">httpGet</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/up</span>
+            <span class="na">port</span><span class="pi">:</span> <span class="m">3000</span>
+          <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="m">10</span>
+          <span class="na">periodSeconds</span><span class="pi">:</span> <span class="m">5</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">256Mi"</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">100m"</span>
+          <span class="na">limits</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">512Mi"</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500m"</span>
+</pre></table></code></div></div><p><strong>What’s happening here:</strong></p><ol><li><strong>Init container</strong> runs first: creates databases, installs Solid Queue/Cache migrations, runs migrations<li>Only after init succeeds, <strong>main container</strong> starts: Rails web server (Puma)<li><strong>Health checks</strong> ensure Rails is responding before routing traffic<li><strong>Resource limits</strong> prevent any pod from hogging the Pi’s limited RAM</ol><p>Apply it:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>kubectl apply <span class="nt">-f</span> rails-deployment.yaml
+
+<span class="c"># Watch pods start (this takes longer due to init container)</span>
+kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>rails <span class="nt">-w</span>
+</pre></table></code></div></div><p>You’ll see pods in <code class="language-plaintext highlighter-rouge">Init:0/1</code> status while migrations run. Check init logs:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="c"># Get pod name</span>
+kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>rails
+
+<span class="c"># Check init container logs</span>
+kubectl logs &lt;pod-name&gt; <span class="nt">-c</span> db-setup
+</pre></table></code></div></div><p>You should see migration output. Once init completes, pods transition to <code class="language-plaintext highlighter-rouge">Running</code> status.</p><h3 id="a-nasty-bug-i-hit-multi-database-setup"><span class="me-2">A Nasty Bug I Hit: Multi-Database Setup</span><a href="#a-nasty-bug-i-hit-multi-database-setup" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Rails 8 uses separate databases for cache and queue by default:</p><ul><li><code class="language-plaintext highlighter-rouge">myapp_production</code> (primary)<li><code class="language-plaintext highlighter-rouge">myapp_production_cache</code> (cache)<li><code class="language-plaintext highlighter-rouge">myapp_production_queue</code> (queue)<li><code class="language-plaintext highlighter-rouge">myapp_production_cable</code> (action cable)</ul><p>PostgreSQL only auto-creates <code class="language-plaintext highlighter-rouge">myapp_production</code>. The init container failed with “Database myapp_production_cache does not exist”.</p><p><strong>Solution:</strong> Add <code class="language-plaintext highlighter-rouge">db:create</code> before <code class="language-plaintext highlighter-rouge">db:prepare</code> in the init container:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre>bundle <span class="nb">exec </span>rails db:create <span class="o">||</span> <span class="nb">echo</span> <span class="s2">"Databases may exist"</span>
+bundle <span class="nb">exec </span>rails db:prepare
+</pre></table></code></div></div><p>The <code class="language-plaintext highlighter-rouge">|| echo</code> prevents failure if databases already exist. Took me an hour to figure this out.</p><h3 id="rails-service"><span class="me-2">Rails Service</span><a href="#rails-service" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Time to create a load balancer for the web pods.</p><p><strong>Why we need this:</strong> Just like with PostgreSQL, we need a stable way to access the Rails pods. This Service gives us a single DNS name (<code class="language-plaintext highlighter-rouge">rails-service</code>) and automatically distributes incoming requests across all healthy Rails pods.</p><p><strong>Where it’s used:</strong> We’ll use <code class="language-plaintext highlighter-rouge">kubectl port-forward service/rails-service</code> to access the app from our laptop. Later, an Ingress controller would route external traffic to this service.</p><p><strong><code class="language-plaintext highlighter-rouge">rails-service.yaml</code>:</strong></p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">rails-service</span>  <span class="c1"># ← DNS name for accessing Rails internally</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">ClusterIP</span>  <span class="c1"># ← Internal only (use Ingress for external access)</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">rails</span>  <span class="c1"># ← Finds pods with label "app: rails"</span>
+                <span class="c1"># (matches labels in rails-deployment.yaml)</span>
+  <span class="na">ports</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>          <span class="c1"># ← Service listens on port 80</span>
+    <span class="na">targetPort</span><span class="pi">:</span> <span class="m">3000</span>  <span class="c1"># ← Forwards to pod's containerPort 3000 (Puma)</span>
+</pre></table></code></div></div><p>Apply it:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>kubectl apply <span class="nt">-f</span> rails-service.yaml
+
+<span class="c"># Check endpoints (should list all 3 Rails pod IPs)</span>
+kubectl get endpoints rails-service
+</pre></table></code></div></div><p>The service automatically distributes traffic across your 3 Rails pods.</p><h2 id="step-6-deploy-solidqueue-workers"><span class="me-2">Step 6: Deploy SolidQueue Workers</span><a href="#step-6-deploy-solidqueue-workers" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><blockquote><p><strong>Note:</strong> This is where I stopped in my initial deployment. Steps 7-8 below cover testing and troubleshooting what I’ve deployed so far. Future work like Ingress and persistent storage for uploads will be covered in upcoming posts.</p></blockquote><p>Background jobs need dedicated worker processes.</p><p><strong>Why we need this:</strong> Background jobs (sending emails, processing uploads, etc.) shouldn’t run on the web server pods—they’d compete for resources and slow down HTTP responses. SolidQueue workers are dedicated pods that poll the database for jobs and process them.</p><p><strong>The clever part:</strong> We use the <strong>exact same Docker image</strong> (<code class="language-plaintext highlighter-rouge">your-username/my-rails-app:v1</code>) for both web servers and workers. The only difference is what command we tell the container to run:</p><ul><li><strong>Web pods:</strong> Run the default command from the Dockerfile → Puma web server starts (<code class="language-plaintext highlighter-rouge">rails server</code>)<li><strong>Worker pods:</strong> Override the command in the deployment YAML → SolidQueue starts (<code class="language-plaintext highlighter-rouge">bundle exec rake solid_queue:start</code>)</ul><p>This means you only need to build and maintain one Docker image for your entire Rails stack. Same codebase, different processes.</p><p><strong>Where it’s used:</strong> These workers continuously poll the <code class="language-plaintext highlighter-rouge">solid_queue_jobs</code> table in PostgreSQL, pick up new jobs, process them, and mark them complete.</p><p><strong><code class="language-plaintext highlighter-rouge">solid-queue-deployment.yaml</code>:</strong></p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre><td class="rouge-code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">solid-queue-worker</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">2</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">solid-queue-worker</span>  <span class="c1"># ← Deployment manages pods with this label</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">solid-queue-worker</span>  <span class="c1"># ← Each worker pod gets this label</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">worker</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">your-username/my-rails-app:v1</span>  <span class="c1"># ← Same image as rails-deployment</span>
+        <span class="na">command</span><span class="pi">:</span>  <span class="c1"># ← Different command: runs SolidQueue instead of web server</span>
+          <span class="pi">-</span> <span class="s">bundle</span>
+          <span class="pi">-</span> <span class="s">exec</span>
+          <span class="pi">-</span> <span class="s">rake</span>
+          <span class="pi">-</span> <span class="s">solid_queue:start</span>
+        <span class="na">envFrom</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">configMapRef</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">rails-config</span>  <span class="c1"># ← Workers use same DATABASE_HOST="postgres" to connect</span>
+        <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">rails-secret</span>  <span class="c1"># ← Workers use same DATABASE_PASSWORD to authenticate</span>
+        <span class="na">resources</span><span class="pi">:</span>
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">256Mi"</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">100m"</span>
+          <span class="na">limits</span><span class="pi">:</span>
+            <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">512Mi"</span>
+            <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500m"</span>
+</pre></table></code></div></div><p>Apply it:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>kubectl apply <span class="nt">-f</span> solid-queue-deployment.yaml
+
+<span class="c"># Watch workers start</span>
+kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>solid-queue-worker <span class="nt">-w</span>
+</pre></table></code></div></div><p>Check worker logs:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>kubectl logs <span class="nt">-f</span> deployment/solid-queue-worker
+</pre></table></code></div></div><p>You should see SolidQueue starting up and polling for jobs.</p><h3 id="understanding-the-command-difference"><span class="me-2">Understanding the Command Difference</span><a href="#understanding-the-command-difference" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Now that you’ve deployed both the Rails web servers and SolidQueue workers, let’s see exactly how Kubernetes runs different commands from the same Docker image.</p><p><strong>In the Rails deployment</strong> (<code class="language-plaintext highlighter-rouge">rails-deployment.yaml</code>), we don’t specify a <code class="language-plaintext highlighter-rouge">command:</code> field, so Kubernetes uses the default from the Dockerfile:</p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre><span class="na">containers</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+  <span class="na">image</span><span class="pi">:</span> <span class="s">your-username/my-rails-app:v1</span>
+  <span class="c1"># No command: specified = uses Dockerfile default (Puma web server)</span>
+</pre></table></code></div></div><p><strong>In the worker deployment</strong> (<code class="language-plaintext highlighter-rouge">solid-queue-deployment.yaml</code>), we override the command:</p><div class="language-yaml highlighter-rouge"><div class="code-header"> <span data-label-text="YAML"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="na">containers</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">worker</span>
+  <span class="na">image</span><span class="pi">:</span> <span class="s">your-username/my-rails-app:v1</span>  <span class="c1"># Same image!</span>
+  <span class="na">command</span><span class="pi">:</span>  <span class="c1"># This overrides the Dockerfile default</span>
+    <span class="pi">-</span> <span class="s">bundle</span>
+    <span class="pi">-</span> <span class="s">exec</span>
+    <span class="pi">-</span> <span class="s">rake</span>
+    <span class="pi">-</span> <span class="s">solid_queue:start</span>
+</pre></table></code></div></div><p>This is a powerful Kubernetes pattern: the <code class="language-plaintext highlighter-rouge">command:</code> field in your deployment YAML can override whatever CMD or ENTRYPOINT is defined in the Dockerfile. One image, multiple uses!</p><h2 id="step-7-test-the-full-stack"><span class="me-2">Step 7: Test the Full Stack</span><a href="#step-7-test-the-full-stack" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Time to see if everything works together.</p><h3 id="access-rails-application"><span class="me-2">Access Rails Application</span><a href="#access-rails-application" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Use port-forwarding to access the app:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>kubectl port-forward service/rails-service 3000:80
+</pre></table></code></div></div><p>Open <code class="language-plaintext highlighter-rouge">http://localhost:3000</code> in your browser. You should see your Rails app!</p><h3 id="test-background-jobs"><span class="me-2">Test Background Jobs</span><a href="#test-background-jobs" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p>Open a Rails console:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> deployment/rails-app <span class="nt">--</span> rails console
+</pre></table></code></div></div><p>In the console, queue a test job:</p><div class="language-ruby highlighter-rouge"><div class="code-header"> <span data-label-text="Ruby"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre><span class="c1"># Create a simple job class if you don't have one</span>
+<span class="k">class</span> <span class="nc">TestJob</span> <span class="o">&lt;</span> <span class="no">ApplicationJob</span>
+  <span class="k">def</span> <span class="nf">perform</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">"Processing: </span><span class="si">#{</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Queue the job</span>
+<span class="no">TestJob</span><span class="p">.</span><span class="nf">perform_later</span><span class="p">(</span><span class="s2">"Hello from Kubernetes!"</span><span class="p">)</span>
+
+<span class="c1"># Check job count</span>
+<span class="no">SolidQueue</span><span class="o">::</span><span class="no">Job</span><span class="p">.</span><span class="nf">count</span>
+<span class="c1"># =&gt; 1</span>
+
+<span class="c1"># Exit console</span>
+<span class="nb">exit</span>
+</pre></table></code></div></div><p>Now check the worker logs:</p><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>kubectl logs <span class="nt">-f</span> deployment/solid-queue-worker
+</pre></table></code></div></div><p>You should see the worker picking up and processing the job! If you see “Processing: Hello from Kubernetes!” in the logs, your entire stack is working.</p><h2 id="step-8-challenges-i-hit-and-how-i-solved-them"><span class="me-2">Step 8: Challenges I Hit and How I Solved Them</span><a href="#step-8-challenges-i-hit-and-how-i-solved-them" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>This deployment wasn’t without its struggles. Here are the main issues I encountered and how I fixed them:</p><h3 id="1-cross-architecture-exec-format-error"><span class="me-2">1. Cross-Architecture Exec Format Error</span><a href="#1-cross-architecture-exec-format-error" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Problem:</strong> Built image on x86_64 laptop, pods failed with “exec /bin/sh: exec format error” on ARM64 Pi.</p><p><strong>Solution:</strong> Build with <code class="language-plaintext highlighter-rouge">--platform linux/arm64</code> on laptop with QEMU, or build directly on Pi.</p><p><strong>Lesson:</strong> Always specify target platform for cross-compilation.</p><h3 id="2-postgresql-socket-connection-error"><span class="me-2">2. PostgreSQL Socket Connection Error</span><a href="#2-postgresql-socket-connection-error" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Problem:</strong> Init container failed: “connection to socket ‘/var/run/postgresql/.s.PGSQL.5432’ failed”</p><p><strong>Solution:</strong> Rails was trying Unix socket. Fixed by ensuring <code class="language-plaintext highlighter-rouge">database.yml</code> reads <code class="language-plaintext highlighter-rouge">DATABASE_HOST</code> from env var (TCP connection).</p><p><strong>Lesson:</strong> Kubernetes requires TCP connections between pods, not Unix sockets.</p><h3 id="3-multi-database-creation"><span class="me-2">3. Multi-Database Creation</span><a href="#3-multi-database-creation" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Problem:</strong> Init failed: “Database myapp_production_cache does not exist”</p><p><strong>Solution:</strong> Added <code class="language-plaintext highlighter-rouge">rails db:create</code> before <code class="language-plaintext highlighter-rouge">db:prepare</code> in init container to create all databases.</p><p><strong>Lesson:</strong> Rails 8 multi-database setup requires explicit database creation.</p><h3 id="4-csrf-errors-with-port-forward"><span class="me-2">4. CSRF Errors with Port-Forward</span><a href="#4-csrf-errors-with-port-forward" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Problem:</strong> Got “HTTP Origin header didn’t match request.base_url” when accessing via port-forward.</p><p><strong>Solution:</strong> Made <code class="language-plaintext highlighter-rouge">force_ssl</code> and <code class="language-plaintext highlighter-rouge">assume_ssl</code> configurable via env vars, disabled for local testing.</p><p><strong>Lesson:</strong> Production Rails expects HTTPS. For local testing without SSL, make it configurable.</p><h3 id="5-image-caching-issues"><span class="me-2">5. Image Caching Issues</span><a href="#5-image-caching-issues" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><p><strong>Problem:</strong> Pushed updated image but pods still ran old cached version.</p><p><strong>Solution:</strong> Used new tag (<code class="language-plaintext highlighter-rouge">v2</code>, <code class="language-plaintext highlighter-rouge">v3</code>) instead of reusing <code class="language-plaintext highlighter-rouge">v1</code>. Kubernetes caches by tag.</p><p><strong>Lesson:</strong> Use unique tags for each build, or set <code class="language-plaintext highlighter-rouge">imagePullPolicy: Always</code>.</p><h2 id="monitoring-your-application"><span class="me-2">Monitoring Your Application</span><a href="#monitoring-your-application" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><h3 id="check-pod-status"><span class="me-2">Check Pod Status</span><a href="#check-pod-status" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="c"># All pods</span>
+kubectl get pods
+
+<span class="c"># Just Rails pods</span>
+kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>rails
+
+<span class="c"># Just workers</span>
+kubectl get pods <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>solid-queue-worker
+
+<span class="c"># Detailed pod info</span>
+kubectl describe pod &lt;pod-name&gt;
+</pre></table></code></div></div><h3 id="view-logs"><span class="me-2">View Logs</span><a href="#view-logs" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre><span class="c"># Rails web logs</span>
+kubectl logs <span class="nt">-f</span> deployment/rails-app
+
+<span class="c"># Worker logs</span>
+kubectl logs <span class="nt">-f</span> deployment/solid-queue-worker
+
+<span class="c"># PostgreSQL logs</span>
+kubectl logs postgres-0
+
+<span class="c"># Logs from specific pod</span>
+kubectl logs &lt;pod-name&gt;
+
+<span class="c"># Previous crashed container logs</span>
+kubectl logs &lt;pod-name&gt; <span class="nt">--previous</span>
+</pre></table></code></div></div><h3 id="rails-console-access"><span class="me-2">Rails Console Access</span><a href="#rails-console-access" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3><div class="language-bash highlighter-rouge"><div class="code-header"> <span data-label-text="Shell"><i class="fas fa-code fa-fw small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre><span class="c"># Open console in a web pod</span>
+kubectl <span class="nb">exec</span> <span class="nt">-it</span> deployment/rails-app <span class="nt">--</span> rails console
+
+<span class="c"># Check database connection</span>
+<span class="o">&gt;</span> ActiveRecord::Base.connection.execute<span class="o">(</span><span class="s1">'SELECT 1'</span><span class="o">)</span>
+
+<span class="c"># Check job queue</span>
+<span class="o">&gt;</span> SolidQueue::Job.count
+<span class="o">&gt;</span> SolidQueue::Job.pending.count
+<span class="o">&gt;</span> SolidQueue::Job.failed.count
+
+<span class="c"># Exit</span>
+<span class="o">&gt;</span> <span class="nb">exit</span>
+</pre></table></code></div></div><h2 id="what-you-learned"><span class="me-2">What You Learned</span><a href="#what-you-learned" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>✅ How to deploy a production Rails 8 application on Kubernetes<br /> ✅ StatefulSets vs Deployments (databases vs stateless apps)<br /> ✅ Persistent storage with PersistentVolumeClaims<br /> ✅ Init containers for database migrations<br /> ✅ ConfigMaps and Secrets for configuration management<br /> ✅ Services for load balancing and service discovery<br /> ✅ Health checks with liveness and readiness probes<br /> ✅ Cross-architecture Docker builds (x86_64 → ARM64)<br /> ✅ SolidQueue for background jobs in Kubernetes<br /> ✅ Resource limits and requests on Raspberry Pi</p><h2 id="conclusion"><span class="me-2">Conclusion</span><a href="#conclusion" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>Deploying Rails 8 with SolidQueue on my Raspberry Pi k3s cluster was one of the most educational projects I’ve done. It’s one thing to deploy nginx demos; it’s another to deploy a full production application stack with database, background jobs, and health checks—all running on $35 computers in a distributed cluster.</p><p>The challenges were real: architecture mismatches, database connection errors, multi-database setup, SSL configuration. But each problem taught me something valuable about how Kubernetes works and how modern Rails is designed to run in containerized environments.</p><p>What really impressed me was how well Rails 8 works in Kubernetes. The SolidQueue and SolidCache features reduce infrastructure complexity significantly—no Redis to manage means fewer moving parts, simpler networking, and lower resource usage on the Pi cluster.</p><p>And honestly? Seeing background jobs process on dedicated worker pods while the web server handles HTTP requests, all automatically distributed by Kubernetes services, with health checks ensuring everything stays healthy—that’s pretty cool.</p><p><strong>This is just the beginning.</strong> Right now I’m using <code class="language-plaintext highlighter-rouge">kubectl port-forward</code> to access the app, which isn’t practical for long-term use. In upcoming posts, I’ll be adding Ingress for proper external access, persistent storage for file uploads, monitoring with Mission Control Jobs, and possibly SSL/TLS with cert-manager. But the foundation is solid, and I have a working Rails cluster to build on.</p><h2 id="whats-next"><span class="me-2">What’s Next?</span><a href="#whats-next" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p>I have a working Rails cluster, but there’s more to do. In the <a href="/posts/kubernetes-learning-path-ingress-controller/">next post</a>, I’ll be setting up an <strong>Ingress Controller</strong> for proper external HTTP access—no more port-forward!</p><p>After that, I’ll be exploring:</p><ul><li><strong>Persistent storage for uploads</strong> using NFS or Longhorn<li><strong>Mission Control Jobs</strong> for monitoring background jobs via web UI<li><strong>SSL/TLS with cert-manager</strong> and Let’s Encrypt<li><strong>Monitoring with Prometheus and Grafana</strong> on the Pi cluster<li><strong>CI/CD pipelines</strong> with GitHub Actions deploying to k3s<li><strong>Database backups</strong> and disaster recovery</ul><p>The foundation is solid. Now it’s time to make it production-ready.</p><p>Stay tuned!</p><hr /><h2 id="series-navigation"><span class="me-2">Series Navigation</span><a href="#series-navigation" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2><p><strong>Part 1:</strong> <a href="/posts/kubernetes-learning-path-deploy-your-first-app/">Deploy Your First App</a><br /> <strong>Part 2:</strong> <a href="/posts/kubernetes-learning-path-configmaps-and-secrets/">ConfigMaps and Secrets</a><br /> <strong>Part 3:</strong> <a href="/posts/kubernetes-learning-path-namespaces/">Understanding Namespaces</a><br /> <strong>Part 4:</strong> <a href="/posts/kubernetes-learning-path-port-mapping/">Understanding Port Mapping in k3d</a><br /> <strong>Part 5:</strong> <a href="/posts/kubernetes-learning-path-k3s-on-raspberry-pi/">Setting Up k3s on Raspberry Pi</a><br /> <strong>Part 6:</strong> Deploying Rails 8 with SolidQueue on k3s ← You just finished this!<br /> <strong>Part 7:</strong> <a href="/posts/kubernetes-learning-path-ingress-controller/">Setting Up Ingress Controller</a><br /> <strong>Part 8:</strong> Persistent Storage (Coming soon)</p><hr /><p>Found a mistake or have questions? Feel free to <a href="https://github.com/shairyar/shairyar.github.io/issues/new">open an issue here</a>.</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw me-1"></i> <a href="/categories/kubernetes/">Kubernetes</a>, <a href="/categories/tutorial/">Tutorial</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw me-1"></i> <a href="/tags/kubernetes/" class="post-tag no-text-decoration" >kubernetes</a> <a href="/tags/k3s/" class="post-tag no-text-decoration" >k3s</a> <a href="/tags/raspberry-pi/" class="post-tag no-text-decoration" >raspberry-pi</a> <a href="/tags/ruby-on-rails/" class="post-tag no-text-decoration" >ruby-on-rails</a> <a href="/tags/solidqueue/" class="post-tag no-text-decoration" >solidqueue</a> <a href="/tags/postgresql/" class="post-tag no-text-decoration" >postgresql</a> <a href="/tags/deployment/" class="post-tag no-text-decoration" >deployment</a></div><div class=" post-tail-bottom d-flex justify-content-between align-items-center mt-5 pb-2 " ><div class="license-wrapper"> Thanks for reading! Feel free to share this post with others.</div><div class="share-wrapper d-flex align-items-center"> <span class="share-label text-muted">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Kubernetes%20Learning%20Path:%20Deploying%20Rails%208%20with%20SolidQueue%20on%20Raspberry%20Pi%20k3s%20-%20Shairyar%20Baig&url=https%3A%2F%2Fshairyar.github.io%2Fposts%2Fkubernetes-learning-path-rails-solidqueue-on-k3s%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Twitter" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Kubernetes%20Learning%20Path:%20Deploying%20Rails%208%20with%20SolidQueue%20on%20Raspberry%20Pi%20k3s%20-%20Shairyar%20Baig&u=https%3A%2F%2Fshairyar.github.io%2Fposts%2Fkubernetes-learning-path-rails-solidqueue-on-k3s%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Facebook" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Fshairyar.github.io%2Fposts%2Fkubernetes-learning-path-rails-solidqueue-on-k3s%2F&text=Kubernetes%20Learning%20Path:%20Deploying%20Rails%208%20with%20SolidQueue%20on%20Raspberry%20Pi%20k3s%20-%20Shairyar%20Baig" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Telegram" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <button id="copy-link" aria-label="Copy link" class="btn small" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy link" data-title-succeed="Link copied successfully!" > <i class="fa-fw fas fa-link pe-none fs-6"></i> </button> </span></div></div></div></article></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted"><div class="access"><section id="access-lastmod"><h2 class="panel-heading">Recently Updated</h2><ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2"><li class="text-truncate lh-lg"> <a href="/posts/kubernetes-learning-path-persistent-storage/">Kubernetes Learning Path: Understanding Persistent Storage</a><li class="text-truncate lh-lg"> <a href="/posts/remote-access-to-k3s-homelab-with-tailscale/">Remote Access to Your k3s Homelab with Tailscale</a><li class="text-truncate lh-lg"> <a href="/posts/kubernetes-learning-path-rails-solidqueue-on-k3s/">Kubernetes Learning Path: Deploying Rails 8 with SolidQueue on Raspberry Pi k3s</a><li class="text-truncate lh-lg"> <a href="/posts/kubernetes-learning-path-ingress-controller/">Kubernetes Learning Path: Setting Up Ingress Controller for External Access</a><li class="text-truncate lh-lg"> <a href="/posts/kubernetes-learning-path-k3s-on-raspberry-pi/">Kubernetes Learning Path: Setting Up k3s on Raspberry Pi</a></ul></section><section><h2 class="panel-heading">Trending Tags</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/kubernetes/">kubernetes</a> <a class="post-tag btn btn-outline-primary" href="/tags/k3d/">k3d</a> <a class="post-tag btn btn-outline-primary" href="/tags/k3s/">k3s</a> <a class="post-tag btn btn-outline-primary" href="/tags/deployment/">deployment</a> <a class="post-tag btn btn-outline-primary" href="/tags/raspberry-pi/">raspberry-pi</a> <a class="post-tag btn btn-outline-primary" href="/tags/configmap/">configmap</a> <a class="post-tag btn btn-outline-primary" href="/tags/networking/">networking</a> <a class="post-tag btn btn-outline-primary" href="/tags/postgresql/">postgresql</a> <a class="post-tag btn btn-outline-primary" href="/tags/ruby-on-rails/">ruby-on-rails</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div class="toc-border-cover z-3"></div><section id="toc-wrapper" class="invisible position-sticky ps-0 pe-4 pb-4"><h2 class="panel-heading ps-3 pb-2 mb-0">Contents</h2><nav id="toc"></nav></section></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><aside id="related-posts" aria-labelledby="related-label"><h3 class="mb-4" id="related-label">Further Reading</h3><nav class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 mb-4"><article class="col"> <a href="/posts/kubernetes-learning-path-k3s-on-raspberry-pi/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1761714000" data-df="ll" > Oct 29, 2025 </time><h4 class="pt-0 my-2">Kubernetes Learning Path: Setting Up k3s on Raspberry Pi</h4><div class="text-muted"><p>Kubernetes Learning Path: Setting Up k3s on Raspberry Pi After going through the first four parts of this series with k3d, I felt ready to take things to the next level. k3d is great for learning ...</p></div></div></a></article><article class="col"> <a href="/posts/remote-access-to-k3s-homelab-with-tailscale/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1762664400" data-df="ll" > Nov 9, 2025 </time><h4 class="pt-0 my-2">Remote Access to Your k3s Homelab with Tailscale</h4><div class="text-muted"><p># Remote Access to Your k3s Homelab with Tailscale While working on my k3s homelab cluster, I ran into an interesting challenge: how could I access my cluster when I wasn't home? I wanted to run `...</p></div></div></a></article><article class="col"> <a href="/posts/kubernetes-learning-path-persistent-storage/" class="post-preview card h-100"><div class="card-body"> <time data-ts="1762923600" data-df="ll" > Nov 12, 2025 </time><h4 class="pt-0 my-2">Kubernetes Learning Path: Understanding Persistent Storage</h4><div class="text-muted"><p># Kubernetes Learning Path: Understanding Persistent Storage When I first started deploying applications on Kubernetes, I quickly ran into a problem: my database data kept disappearing every time ...</p></div></div></a></article></nav></aside><nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation"> <a href="/posts/kubernetes-learning-path-k3s-on-raspberry-pi/" class="btn btn-outline-primary" aria-label="Older" ><p>Kubernetes Learning Path: Setting Up k3s on Raspberry Pi</p></a> <a href="/posts/kubernetes-learning-path-ingress-controller/" class="btn btn-outline-primary" aria-label="Newer" ><p>Kubernetes Learning Path: Setting Up Ingress Controller for External Access</p></a></nav><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://twitter.com/iamshairyar">Shairyar Baig</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author." >Some rights reserved.</span></p><p>Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a data-bs-toggle="tooltip" data-bs-placement="top" title="v7.3.1" href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener" >Chirpy</a> theme.</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center d-none"><div class="col-11 content"><div id="search-hints"><section><h2 class="panel-heading">Trending Tags</h2><div class="d-flex flex-wrap mt-3 mb-1 me-3"> <a class="post-tag btn btn-outline-primary" href="/tags/kubernetes/">kubernetes</a> <a class="post-tag btn btn-outline-primary" href="/tags/k3d/">k3d</a> <a class="post-tag btn btn-outline-primary" href="/tags/k3s/">k3s</a> <a class="post-tag btn btn-outline-primary" href="/tags/deployment/">deployment</a> <a class="post-tag btn btn-outline-primary" href="/tags/raspberry-pi/">raspberry-pi</a> <a class="post-tag btn btn-outline-primary" href="/tags/configmap/">configmap</a> <a class="post-tag btn btn-outline-primary" href="/tags/networking/">networking</a> <a class="post-tag btn btn-outline-primary" href="/tags/postgresql/">postgresql</a> <a class="post-tag btn btn-outline-primary" href="/tags/ruby-on-rails/">ruby-on-rails</a> <a class="post-tag btn btn-outline-primary" href="/tags/docker/">docker</a></div></section></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div><script> document.addEventListener('DOMContentLoaded', () => { SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{content}</p></article>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); }); </script>
